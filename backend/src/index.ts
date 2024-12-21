@@ -1,5 +1,5 @@
 import express from "express";
-import { userModel } from "./db";
+import { userModel, userRoomModel } from "./db";
 import mongoose from "mongoose";
 
 const app = express()
@@ -61,7 +61,10 @@ app.post('/api/v1/signin',async(req,res)=>{
 
 app.post('/api/v1/joinRoom',async(req ,res)=>{
     try{
-
+        await userRoomModel.create({
+            roomId:req.body.roomId,
+            userId:[]
+        })
     }catch(err){
         res.status(500).json({
             message:"internal server error"

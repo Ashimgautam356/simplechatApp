@@ -61,6 +61,20 @@ app.post('/api/v1/signin', (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
     }
 }));
+// joinnig the room
+app.post('/api/v1/joinRoom', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield db_1.userRoomModel.create({
+            roomId: req.body.roomId,
+            userId: []
+        });
+    }
+    catch (err) {
+        res.status(500).json({
+            message: "internal server error"
+        });
+    }
+}));
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         yield mongoose_1.default.connect("mongodb+srv://ashim:ashim12345@taskmanagerproject.zdfcogy.mongodb.net/simpleChatApp");
