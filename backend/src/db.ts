@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
 const userSchema = new mongoose.Schema({
     email:{type:String, require:true, unique:true},
@@ -12,12 +12,22 @@ const userRooms = new mongoose.Schema({
 })
 
 const friendsSchema = new mongoose.Schema({
-    userId: {type:[Schema.Types.ObjectId], ref:'Users', require:true, unique:true},
-    friends: {type:[Schema.Types.ObjectId], ref:'Users', unique:true},
-    requestSent: {type:[Schema.Types.ObjectId], ref:'Users', unique:true},
-    requestRecieve: {type:[Schema.Types.ObjectId], ref:'Users', unique:true},
+    userId: {type:Schema.Types.ObjectId, ref:'Users', require:true},
+    friends: [{type:Schema.Types.ObjectId,default: [], ref:'Users' }],
+})
+const RequestSendSchema  = new mongoose.Schema({
+    userId: {type: Types.ObjectId ,ref:'Users', require:true, unique:true},
+    requestSent: [{type:Types.ObjectId , default: [], ref:'Users'}]
+
+})
+const RequestRecieveSchem  = new mongoose.Schema({
+    userId: {type: Types.ObjectId ,ref:'Users', require:true, unique:true},
+    requestRecieve: [{type:Types.ObjectId , default: [], ref:'Users'}]
+
 })
 
 export const userModel = mongoose.model("Users", userSchema)
 export const userRoomModel = mongoose.model("Rooms",userRooms)
 export const friendsModel = mongoose.model("Friends",friendsSchema)
+export const RequestSendModel = mongoose.model('RequestSend',RequestSendSchema)
+export const RequestRecieveModel = mongoose.model('RequestRecieve',RequestRecieveSchem)
