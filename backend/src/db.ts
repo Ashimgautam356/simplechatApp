@@ -6,8 +6,8 @@ const userSchema = new mongoose.Schema({
     password:{type:String, require:true}
 })
 
-const userRooms = new mongoose.Schema({
-    userId: {type:[Schema.Types.ObjectId], ref:'Users', require:true, unique:true},
+const WebSocketSchema = new mongoose.Schema({
+    userId: [{type:Schema.Types.ObjectId,default: [], ref:'Users' ,require:true}],
     roomId:{type:String, require:true, unique:true} 
 })
 
@@ -26,8 +26,10 @@ const RequestRecieveSchem  = new mongoose.Schema({
 
 })
 
+
+
 export const userModel = mongoose.model("Users", userSchema)
-export const userRoomModel = mongoose.model("Rooms",userRooms)
+export const WebSocketIdModel = mongoose.model("Rooms",WebSocketSchema)
 export const friendsModel = mongoose.model("Friends",friendsSchema)
 export const RequestSendModel = mongoose.model('RequestSend',RequestSendSchema)
 export const RequestRecieveModel = mongoose.model('RequestRecieve',RequestRecieveSchem)

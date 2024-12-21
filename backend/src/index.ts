@@ -1,8 +1,9 @@
 import express, {Request,Response, NextFunction } from "express";
-import { friendsModel, RequestSendModel, RequestRecieveModel, userModel, userRoomModel } from "./db";
+import { friendsModel, RequestSendModel, RequestRecieveModel, userModel, WebSocketIdModel } from "./db";
 import mongoose, { ObjectId,Types,isValidObjectId } from "mongoose";
 import z  from 'zod'
 import jwt from 'jsonwebtoken'
+import { randomString } from "./utils";
 
 
 
@@ -179,6 +180,7 @@ app.post("/api/v1/user/request/acceptOrDelete", async (req,res)=>{
     const isAccept = req.body.isAccept;
     const senderId = req.body.senderId; 
     const ownerId = req.body._id
+    const socketId = randomString()
     if(isAccept){
         try{
             let friend = await friendsModel.findOne({
@@ -194,6 +196,11 @@ app.post("/api/v1/user/request/acceptOrDelete", async (req,res)=>{
             if(!friend?.friends.includes(senderId)){
                 friend?.friends.push(senderId)
                 await friend?.save()
+
+                await WebSocketIdModel.create({
+                    userId:[senderId,ownerId],
+                    roomId:socketId
+                })
             }
     
             if(friend?.friends.includes(senderId)){
@@ -262,25 +269,6 @@ app.post("/api/v1/user/request/acceptOrDelete", async (req,res)=>{
     }
     
 })
-
-
-// joinnig the room
-
-app.post('/api/v1/joinRoom',async(req ,res)=>{
-    try{
-        await userRoomModel.create({
-            roomId:req.body.roomId,
-            userId:[]
-        })
-    }catch(err){
-        res.status(500).json({
-            message:"internal server error"
-        })
-    }
-})
-
-
-
 
 async function main (){
     await mongoose.connect("mongodb+srv://ashim:ashim12345@taskmanagerproject.zdfcogy.mongodb.net/simpleChatApp")
