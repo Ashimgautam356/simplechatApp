@@ -4,6 +4,8 @@ import mongoose, { ObjectId,Types,isValidObjectId } from "mongoose";
 import z  from 'zod'
 import jwt from 'jsonwebtoken'
 import { randomString } from "./utils";
+import WebSocketServer from 'ws'
+import { setupWebSocketServer } from "./webSocketserv";
 
 
 
@@ -180,7 +182,7 @@ app.post("/api/v1/user/request/acceptOrDelete", async (req,res)=>{
     const isAccept = req.body.isAccept;
     const senderId = req.body.senderId; 
     const ownerId = req.body._id
-    const socketId = randomString()
+    const socketId = await randomString()
     if(isAccept){
         try{
             let friend = await friendsModel.findOne({
@@ -190,11 +192,11 @@ app.post("/api/v1/user/request/acceptOrDelete", async (req,res)=>{
             if(!friend){
                 await friendsModel.create({
                     userId: ownerId,
-                    friends:[]
+                    allFriend:[]
                 })
             }
-            if(!friend?.friends.includes(senderId)){
-                friend?.friends.push(senderId)
+            if(!friend?.allFriend.includes(senderId)){
+                friend?.allFriend.push(senderId)
                 await friend?.save()
 
                 await WebSocketIdModel.create({
@@ -203,7 +205,7 @@ app.post("/api/v1/user/request/acceptOrDelete", async (req,res)=>{
                 })
             }
     
-            if(friend?.friends.includes(senderId)){
+            if(friend?.allFriend.includes(senderId)){
                 // removing the request  from the RequestRecievedb after accepting it 
                 let userRequest = await RequestRecieveModel.findOne({
                     userId:ownerId
@@ -269,6 +271,14 @@ app.post("/api/v1/user/request/acceptOrDelete", async (req,res)=>{
     }
     
 })
+
+import http from 'http'
+
+const server = http.createServer(app);
+
+setupWebSocketServer(server)
+
+
 
 async function main (){
     await mongoose.connect("mongodb+srv://ashim:ashim12345@taskmanagerproject.zdfcogy.mongodb.net/simpleChatApp")

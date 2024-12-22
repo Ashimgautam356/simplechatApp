@@ -16,6 +16,8 @@ const express_1 = __importDefault(require("express"));
 const db_1 = require("./db");
 const mongoose_1 = __importDefault(require("mongoose"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const utils_1 = require("./utils");
+const webSocketserv_1 = require("./webSocketserv");
 const JWT_SCRETE = 'this is the super secrete key';
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -168,6 +170,7 @@ app.post("/api/v1/user/request/acceptOrDelete", (req, res) => __awaiter(void 0, 
     const isAccept = req.body.isAccept;
     const senderId = req.body.senderId;
     const ownerId = req.body._id;
+    const socketId = yield (0, utils_1.randomString)();
     if (isAccept) {
         try {
             let friend = yield db_1.friendsModel.findOne({
@@ -176,14 +179,18 @@ app.post("/api/v1/user/request/acceptOrDelete", (req, res) => __awaiter(void 0, 
             if (!friend) {
                 yield db_1.friendsModel.create({
                     userId: ownerId,
-                    friends: []
+                    allFriend: []
                 });
             }
-            if (!(friend === null || friend === void 0 ? void 0 : friend.friends.includes(senderId))) {
-                friend === null || friend === void 0 ? void 0 : friend.friends.push(senderId);
+            if (!(friend === null || friend === void 0 ? void 0 : friend.allFriend.includes(senderId))) {
+                friend === null || friend === void 0 ? void 0 : friend.allFriend.push(senderId);
                 yield (friend === null || friend === void 0 ? void 0 : friend.save());
+                yield db_1.WebSocketIdModel.create({
+                    userId: [senderId, ownerId],
+                    roomId: socketId
+                });
             }
-            if (friend === null || friend === void 0 ? void 0 : friend.friends.includes(senderId)) {
+            if (friend === null || friend === void 0 ? void 0 : friend.allFriend.includes(senderId)) {
                 // removing the request  from the RequestRecievedb after accepting it 
                 let userRequest = yield db_1.RequestRecieveModel.findOne({
                     userId: ownerId
@@ -244,20 +251,9 @@ app.post("/api/v1/user/request/acceptOrDelete", (req, res) => __awaiter(void 0, 
         }
     }
 }));
-// joinnig the room
-app.post('/api/v1/joinRoom', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        yield db_1.userRoomModel.create({
-            roomId: req.body.roomId,
-            userId: []
-        });
-    }
-    catch (err) {
-        res.status(500).json({
-            message: "internal server error"
-        });
-    }
-}));
+const http_1 = __importDefault(require("http"));
+const server = http_1.default.createServer(app);
+(0, webSocketserv_1.setupWebSocketServer)(server);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         yield mongoose_1.default.connect("mongodb+srv://ashim:ashim12345@taskmanagerproject.zdfcogy.mongodb.net/simpleChatApp");

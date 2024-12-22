@@ -7,13 +7,15 @@ const userSchema = new mongoose.Schema({
 })
 
 const WebSocketSchema = new mongoose.Schema({
-    userId: [{type:Schema.Types.ObjectId,default: [], ref:'Users' ,require:true}],
-    roomId:{type:String, require:true, unique:true} 
+    roomId:{type:String, require:true, unique:true},
+    userId: [{type:Schema.Types.ObjectId,default: [], ref:'Users' ,require:true}]
 })
 
-const friendsSchema = new mongoose.Schema({
-    userId: {type:Schema.Types.ObjectId, ref:'Users', require:true},
-    friends: [{type:Schema.Types.ObjectId,default: [], ref:'Users' }],
+
+const AllAcceptedFriendsSchema  = new mongoose.Schema({
+    userId: {type: Types.ObjectId ,ref:'Users', require:true, unique:true},
+    allFriend: [{type:Types.ObjectId , default: [], ref:'Users'}]
+
 })
 const RequestSendSchema  = new mongoose.Schema({
     userId: {type: Types.ObjectId ,ref:'Users', require:true, unique:true},
@@ -30,6 +32,6 @@ const RequestRecieveSchem  = new mongoose.Schema({
 
 export const userModel = mongoose.model("Users", userSchema)
 export const WebSocketIdModel = mongoose.model("Rooms",WebSocketSchema)
-export const friendsModel = mongoose.model("Friends",friendsSchema)
+export const friendsModel = mongoose.model("AllFriend",AllAcceptedFriendsSchema)
 export const RequestSendModel = mongoose.model('RequestSend',RequestSendSchema)
 export const RequestRecieveModel = mongoose.model('RequestRecieve',RequestRecieveSchem)

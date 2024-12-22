@@ -33,20 +33,20 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RequestRecieveModel = exports.RequestSendModel = exports.friendsModel = exports.userRoomModel = exports.userModel = void 0;
+exports.RequestRecieveModel = exports.RequestSendModel = exports.friendsModel = exports.WebSocketIdModel = exports.userModel = void 0;
 const mongoose_1 = __importStar(require("mongoose"));
 const userSchema = new mongoose_1.default.Schema({
     email: { type: String, require: true, unique: true },
     userName: { type: String, require: true },
     password: { type: String, require: true }
 });
-const userRooms = new mongoose_1.default.Schema({
-    userId: { type: [mongoose_1.Schema.Types.ObjectId], ref: 'Users', require: true, unique: true },
-    roomId: { type: String, require: true, unique: true }
+const WebSocketSchema = new mongoose_1.default.Schema({
+    roomId: { type: String, require: true, unique: true },
+    userId: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: 'Users', require: true }]
 });
-const friendsSchema = new mongoose_1.default.Schema({
-    userId: { type: mongoose_1.Schema.Types.ObjectId, ref: 'Users', require: true },
-    friends: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: 'Users' }],
+const AllAcceptedFriendsSchema = new mongoose_1.default.Schema({
+    userId: { type: mongoose_1.Types.ObjectId, ref: 'Users', require: true, unique: true },
+    allFriend: [{ type: mongoose_1.Types.ObjectId, default: [], ref: 'Users' }]
 });
 const RequestSendSchema = new mongoose_1.default.Schema({
     userId: { type: mongoose_1.Types.ObjectId, ref: 'Users', require: true, unique: true },
@@ -57,7 +57,7 @@ const RequestRecieveSchem = new mongoose_1.default.Schema({
     requestRecieve: [{ type: mongoose_1.Types.ObjectId, default: [], ref: 'Users' }]
 });
 exports.userModel = mongoose_1.default.model("Users", userSchema);
-exports.userRoomModel = mongoose_1.default.model("Rooms", userRooms);
-exports.friendsModel = mongoose_1.default.model("Friends", friendsSchema);
+exports.WebSocketIdModel = mongoose_1.default.model("Rooms", WebSocketSchema);
+exports.friendsModel = mongoose_1.default.model("AllFriend", AllAcceptedFriendsSchema);
 exports.RequestSendModel = mongoose_1.default.model('RequestSend', RequestSendSchema);
 exports.RequestRecieveModel = mongoose_1.default.model('RequestRecieve', RequestRecieveSchem);
