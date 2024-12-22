@@ -25,17 +25,15 @@ function setupWebSocketServer(server) {
             const senderId = parsedMessage.payload.senderId;
             const recieverId = parsedMessage.payload.recieverId;
             if (!rmId) {
-                console.log("rmId is null");
                 return;
             }
-            if (parsedMessage.payload.roomId == rmId.roomId && senderId == rmId.userId.includes(senderId) && recieverId == rmId.userId.includes(recieverId)) {
+            if (parsedMessage.payload.roomId == rmId.roomId && rmId.userId.includes(senderId) && rmId.userId.includes(recieverId)) {
                 const roomId = parsedMessage.payload.roomId;
-                if (parsedMessage.type == 'join') {
+                if (parsedMessage.type === 'join') {
                     if (!allSocket.has(roomId)) {
                         allSocket.set(roomId, []);
                     }
                     (_a = allSocket.get(roomId)) === null || _a === void 0 ? void 0 : _a.push(socket);
-                    console.log("user Connected");
                 }
                 if (parsedMessage.type == 'chat') {
                     const message = parsedMessage.payload.message;

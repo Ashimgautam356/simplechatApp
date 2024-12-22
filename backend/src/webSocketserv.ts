@@ -23,21 +23,22 @@ export function setupWebSocketServer(server:Server) {
         const recieverId = parsedMessage.payload.recieverId
 
         if(!rmId){
-            console.log("rmId is null")
             return;
         }
-        if(parsedMessage.payload.roomId == rmId.roomId && senderId== rmId.userId.includes(senderId) && recieverId == rmId.userId.includes(recieverId)  ){
-            
+
+        if(parsedMessage.payload.roomId == rmId.roomId &&  rmId.userId.includes(senderId) && rmId.userId.includes(recieverId)  ){
             const roomId = parsedMessage.payload.roomId
-            if(parsedMessage.type=='join'){
+            
+            if(parsedMessage.type ==='join'){
+
                 if(!allSocket.has(roomId)){
                     allSocket.set(roomId,[])
                 }
                 allSocket.get(roomId)?.push(socket)
-                console.log("user Connected")
             }
 
             if(parsedMessage.type=='chat'){
+
                 const message = parsedMessage.payload.message;
 
                 allSocket.get(roomId)?.forEach((clientSocket)=>{
@@ -46,6 +47,7 @@ export function setupWebSocketServer(server:Server) {
                     }
                 })
             }
+
 
         }
     })
