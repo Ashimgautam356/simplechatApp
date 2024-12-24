@@ -21,8 +21,9 @@ const webSocketserv_1 = require("./webSocketserv");
 const JWT_SCRETE = 'this is the super secrete key';
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+const currentVersion = '${/api/v1}';
 // signup
-app.post('/api/v1/signup', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post(`${currentVersion}/signup`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // const userSignupSchema = z.object({
     //     userName:z.string().min(3,{message:"minimum length shoudl be 3"}).max(15,{message:"maximum length shoudl be 15"}),
     //     email:z.string().email({message:"should be in a email format"}),
@@ -55,7 +56,7 @@ app.post('/api/v1/signup', (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 }));
 // login
-app.post('/api/v1/signin', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post(`${currentVersion}/signin`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const email = req.body.email;
         const password = req.body.password;
@@ -108,7 +109,7 @@ function auth(req, res, next) {
         next();
     });
 }
-app.get('/api/v1/users', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.get(`${currentVersion}/users`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield db_1.userModel.find({}, 'userName _id');
         res.status(200).json({
@@ -124,7 +125,7 @@ app.get('/api/v1/users', (req, res) => __awaiter(void 0, void 0, void 0, functio
 }));
 app.use(auth);
 // sending request 
-app.post("/api/v1/user/sendRequest", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post(`${currentVersion}/user/sendRequest`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const friendUserId = req.body.request;
     const senderId = req.body._id;
     try {
@@ -166,7 +167,7 @@ app.post("/api/v1/user/sendRequest", (req, res) => __awaiter(void 0, void 0, voi
     }
 }));
 // accepting the request
-app.post("/api/v1/user/request/acceptOrDelete", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+app.post(`${currentVersion}/user/request/acceptOrDelete`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const isAccept = req.body.isAccept;
     const senderId = req.body.senderId;
     const ownerId = req.body._id;
