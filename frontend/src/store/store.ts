@@ -1,8 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { chatApp } from "./apis";
 
 export const store = configureStore({
     reducer:{
+        [chatApp.reducerPath]:chatApp.reducer
+    },
 
+    middleware: (getDefaultMiddleware)=>{
+        return getDefaultMiddleware().concat(chatApp.middleware)
     }
 })
 
