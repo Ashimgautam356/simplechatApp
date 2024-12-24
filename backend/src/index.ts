@@ -14,9 +14,11 @@ const app = express()
 
 app.use(express.json())
 
+const currentVersion = '${/api/v1}'
+
 
 // signup
-app.post('/api/v1/signup',async(req,res)=>{
+app.post(`${currentVersion}/signup`,async(req,res)=>{
     // const userSignupSchema = z.object({
     //     userName:z.string().min(3,{message:"minimum length shoudl be 3"}).max(15,{message:"maximum length shoudl be 15"}),
     //     email:z.string().email({message:"should be in a email format"}),
@@ -53,7 +55,7 @@ app.post('/api/v1/signup',async(req,res)=>{
 })
 
 // login
-app.post('/api/v1/signin',async(req,res)=>{
+app.post(`${currentVersion}/signin`,async(req,res)=>{
     try{
         const email = req.body.email; 
         const password = req.body.password
@@ -113,7 +115,7 @@ async function auth(req:Request,res:Response,next:NextFunction){
     next()
 
 }
-app.get('/api/v1/users',async(req,res)=>{
+app.get(`${currentVersion}/users`,async(req,res)=>{
     try{
         const user = await userModel.find({},'userName _id')
         res.status(200).json({
@@ -130,7 +132,7 @@ app.get('/api/v1/users',async(req,res)=>{
 app.use(auth)
 
 // sending request 
-app.post("/api/v1/user/sendRequest", async(req,res)=>{
+app.post(`${currentVersion}/user/sendRequest`, async(req,res)=>{
     const friendUserId  = req.body.request 
     const senderId  = req.body._id
 
@@ -178,7 +180,7 @@ app.post("/api/v1/user/sendRequest", async(req,res)=>{
 
 // accepting the request
 
-app.post("/api/v1/user/request/acceptOrDelete", async (req,res)=>{
+app.post(`${currentVersion}/user/request/acceptOrDelete`, async (req,res)=>{
     const isAccept = req.body.isAccept;
     const senderId = req.body.senderId; 
     const ownerId = req.body._id
