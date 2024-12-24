@@ -18,9 +18,11 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const utils_1 = require("./utils");
 const webSocketserv_1 = require("./webSocketserv");
+const cors_1 = __importDefault(require("cors"));
 const JWT_SCRETE = 'this is the super secrete key';
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use((0, cors_1.default)());
 const currentVersion = '${/api/v1}';
 // signup
 app.post(`${currentVersion}/signup`, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -96,7 +98,7 @@ function auth(req, res, next) {
         }
         if (!jsonwebtoken_1.default.verify(String(token), JWT_SCRETE)) {
             res.status(403).json({
-                message: "token is invalid"
+                message: "fasdftoken is invalid"
             });
             return;
         }

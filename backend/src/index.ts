@@ -6,14 +6,14 @@ import jwt from 'jsonwebtoken'
 import { randomString } from "./utils";
 import WebSocketServer from 'ws'
 import { setupWebSocketServer } from "./webSocketserv";
-
+import cors from 'cors'
 
 
 const JWT_SCRETE = 'this is the super secrete key'
 const app = express()
 
 app.use(express.json())
-
+app.use(cors())
 const currentVersion = '${/api/v1}'
 
 
@@ -100,7 +100,7 @@ async function auth(req:Request,res:Response,next:NextFunction){
     }
     if(!jwt.verify(String(token),JWT_SCRETE)){
         res.status(403).json({
-            message:"token is invalid"
+            message:"fasdftoken is invalid"
         })
         return
     }
