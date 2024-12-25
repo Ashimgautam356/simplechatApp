@@ -42,10 +42,19 @@ export const chatApp = createApi({
                     userName
                 }
             })
+        }),
+        sendRequest: builder.mutation({
+            query:({request})=>({
+                url:'user/sendRequest',
+                method:"POST",
+                body:{
+                    request
+                }
+            })
         })
     })
 
 
 })
 
-export const {useGetUsersQuery,useLoginUserMutation,useSignupUserMutation} = chatApp
+export const {useGetUsersQuery,useLoginUserMutation,useSignupUserMutation,useSendRequestMutation} = chatApp
