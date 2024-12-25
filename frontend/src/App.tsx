@@ -25,6 +25,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { Login } from './pages/Login'
 import { Signup } from './pages/Signup'
+import { HomePageLayout } from './layout/HomePageLayout'
 
 export const App = () => {
   return (
@@ -32,6 +33,11 @@ export const App = () => {
       <Routes>
         <Route path='/' element ={<Login></Login>}></Route>
         <Route path='/signup' element={<Signup></Signup>}></Route>
+        
+        <Route path='/homePage' element={<HomePageLayout></HomePageLayout>}>
+          
+
+        </Route>
 
 
       </Routes>

@@ -5,10 +5,14 @@ export const chatApp = createApi({
     reducerPath:"chatApp",
     baseQuery: fetchBaseQuery({
         baseUrl:'http://localhost:3000/api/v1/',
+        // prepareHeaders:(headres)=>{
+        //     headres.set('token','')
+        // }
     }),
+    
     endpoints: (builder)=>({
         getUsers: builder.query({
-            query:()=>'getUsers',
+            query:(userId)=>(userId? `users/${userId}`: 'users'),
         }),
         loginUser: builder.mutation({
             query:({email,password})=>({
