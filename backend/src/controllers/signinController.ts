@@ -11,7 +11,7 @@ export async function signinController( req:Request, res:Response){
             const user = await userModel.findOne({
                 email:email,
                 password:password
-            })
+            },'userName _id')
     
             if(!user){
                 res.status(403).json({
@@ -26,7 +26,8 @@ export async function signinController( req:Request, res:Response){
     
             res.status(200).json({
                 message:"login",
-                token: token
+                token: token,
+                user: user
             })
         }
         catch(err){

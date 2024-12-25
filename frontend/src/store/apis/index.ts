@@ -5,9 +5,16 @@ export const chatApp = createApi({
     reducerPath:"chatApp",
     baseQuery: fetchBaseQuery({
         baseUrl:'http://localhost:3000/api/v1/',
-        // prepareHeaders:(headres)=>{
-        //     headres.set('token','')
-        // }
+        prepareHeaders: (headers) => {
+            // Retrieve token from localStorage
+            const token = localStorage.getItem('token');
+      
+            if (token) {
+              headers.set('token', `${token}`);
+            }
+      
+            return headers; // Always return the headers
+          },
     }),
     
     endpoints: (builder)=>({

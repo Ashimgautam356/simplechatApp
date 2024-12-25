@@ -7,6 +7,7 @@ import http from 'http'
 import { entryPoint } from "./routes/entryPoint";
 import { auth } from "./middleware/auth";
 import { userEndPoints } from "./routes/userEndPoints";
+import { usersController } from "./controllers/usersController";
 export const JWT_SCRETE = 'this is the super secrete key'
 
 
@@ -25,6 +26,8 @@ app.use(`${currentVersion}`,entryPoint)
 // middle ware
 
 app.use(auth)
+
+app.get(`${currentVersion}/users`,usersController)
 
 // sending request 
 app.use(`${currentVersion}/user`,userEndPoints)

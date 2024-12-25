@@ -1,7 +1,8 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useLoginUserMutation } from '../store/apis'
-import { Link } from 'react-router-dom'
-
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { setCurrentUser } from '../store/slices/currentUser/currentUser'
 
 
 
@@ -15,10 +16,20 @@ export const Login = () => {
 
     const {register, handleSubmit, reset ,formState:{errors}} = useForm<MyForm>()
     const [loginUser] = useLoginUserMutation();
+    const dispatch = useDispatch()
+
+    const navigate = useNavigate()
     const onSubmit:SubmitHandler<MyForm>  = async(data)=>{
         const result = await loginUser(data).unwrap()
-        console.log(result)
+       if(result.message =='login'){
+        localStorage.setItem('token',result.token)
+        const {user} = result
+
+        dispatch(setCurrentUser(user));
+        
         reset()
+        navigate('/homePage')
+       }
     }
 
 

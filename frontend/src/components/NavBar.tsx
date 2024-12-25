@@ -8,11 +8,12 @@ export const NavBar = () => {
 
     const dispatch = useAppDispatch()
     const state =useAppSelector((state)=> state.showFriend)
+    const userName = useAppSelector((state)=> state.currentUser)
 
   return (
     <div className='min-h-14 w-screen flex justify-around items-center'>
         <div>
-            <p>MY Name</p>
+            <p>{userName.userName}</p>
         </div>
         <div>
             <p onClick={()=>{dispatch(changeState())}} className="cursor-pointer">Friends</p>

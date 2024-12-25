@@ -21,6 +21,7 @@ const http_1 = __importDefault(require("http"));
 const entryPoint_1 = require("./routes/entryPoint");
 const auth_1 = require("./middleware/auth");
 const userEndPoints_1 = require("./routes/userEndPoints");
+const usersController_1 = require("./controllers/usersController");
 exports.JWT_SCRETE = 'this is the super secrete key';
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
@@ -29,6 +30,7 @@ const currentVersion = '/api/v1';
 app.use(`${currentVersion}`, entryPoint_1.entryPoint);
 // middle ware
 app.use(auth_1.auth);
+app.get(`${currentVersion}/users`, usersController_1.usersController);
 // sending request 
 app.use(`${currentVersion}/user`, userEndPoints_1.userEndPoints);
 const server = http_1.default.createServer(app);

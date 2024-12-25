@@ -11,12 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersController = usersController;
 const db_1 = require("../db");
-function usersController(req, res, nex) {
+function usersController(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const user = yield db_1.userModel.find({}, 'userName _id');
+            // Fetch all users except the one with the userId from the token
+            const otherUsers = yield db_1.userModel.find({ _id: { $ne: req.body._id } }, 'userName _id');
+            // Respond with the formatted data
             res.status(200).json({
-                users: user
+                otherUsers
             });
         }
         catch (err) {

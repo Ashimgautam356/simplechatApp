@@ -24,7 +24,7 @@ function signinController(req, res) {
             const user = yield db_1.userModel.findOne({
                 email: email,
                 password: password
-            });
+            }, 'userName _id');
             if (!user) {
                 res.status(403).json({
                     message: "crediantials invalid"
@@ -36,7 +36,8 @@ function signinController(req, res) {
             }, __1.JWT_SCRETE);
             res.status(200).json({
                 message: "login",
-                token: token
+                token: token,
+                user: user
             });
         }
         catch (err) {
