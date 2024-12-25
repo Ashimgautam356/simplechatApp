@@ -9,25 +9,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.usersController = usersController;
+exports.myfriend = myfriend;
 const db_1 = require("../db");
-function usersController(req, res) {
+function myfriend(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const userId = req.body._id;
-            const requestSent = yield db_1.RequestSendModel.findOne({ userId });
-            const sentUserIds = (requestSent === null || requestSent === void 0 ? void 0 : requestSent.requestSent) || [];
-            const requestRecieve = yield db_1.RequestRecieveModel.findOne({ userId });
-            const receivedUserIds = (requestRecieve === null || requestRecieve === void 0 ? void 0 : requestRecieve.requestRecieve) || [];
-            const actualFriends = yield db_1.friendsModel.findOne({ userId });
-            const friendsId = (actualFriends === null || actualFriends === void 0 ? void 0 : actualFriends.allFriend) || [];
-            const excludedUserIds = [...sentUserIds, ...receivedUserIds, ...friendsId, userId];
-            // Fetch all users except the one with the userId from the token
-            const otherUsers = yield db_1.userModel.find({ _id: { $nin: excludedUserIds } }, 'userName _id' // Fetch only userName and _id fields
-            );
-            // Respond with the formatted data
+            const friends = yield db_1.friendsModel.findOne({ userId: userId }).populate('allFriend', 'userName email');
             res.status(200).json({
-                otherUsers,
+                message: "success",
+                friends: friends
             });
         }
         catch (err) {

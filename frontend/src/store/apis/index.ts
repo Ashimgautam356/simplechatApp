@@ -51,10 +51,28 @@ export const chatApp = createApi({
                     request
                 }
             })
+        }),
+        getFriends:builder.query({
+            query:(userId)=>(userId? `user/friends/${userId}`: 'user/friends' )
+        }),
+        getRequestRecive:builder.query({
+            query:(userId)=>(userId?`user/requestRecive/${userId}`:'user/requestRecive')
+        }),
+        acceptOrdelte:builder.mutation({
+            query:({isAccept,senderId})=>({
+                url:'user/request/acceptOrDelete',
+                method:"POST",
+                body:{
+                    isAccept,
+                    senderId
+                }
+            })
         })
+
+
     })
 
 
 })
 
-export const {useGetUsersQuery,useLoginUserMutation,useSignupUserMutation,useSendRequestMutation} = chatApp
+export const {useGetUsersQuery,useLoginUserMutation,useSignupUserMutation,useSendRequestMutation, useGetFriendsQuery,useGetRequestReciveQuery,useAcceptOrdelteMutation} = chatApp

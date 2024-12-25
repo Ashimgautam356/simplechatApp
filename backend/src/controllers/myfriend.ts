@@ -6,7 +6,7 @@ export async function myfriend(req:Request, res:Response){
     try{
 
         const userId = req.body._id; 
-        const friends = await friendsModel.findOne({userId:userId})
+        const friends = await friendsModel.findOne({userId:userId}).populate('allFriend', 'userName email')
 
         res.status(200).json({
             message:"success",

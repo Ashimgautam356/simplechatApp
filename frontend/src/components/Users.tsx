@@ -1,25 +1,25 @@
 import { useGetUsersQuery, useSendRequestMutation } from "../store/apis"
 
 export const Users = () => {
+
+
       const {data,error,isLoading} = useGetUsersQuery()
+      const [request] = useSendRequestMutation()
     
         if(error){
-            return <h1>please try again</h1>
+            return (<h1>please try again</h1>)
         }
         if(isLoading){
-            return <h1>loading!!!!!!!!!</h1>
+            return (<h1>loading!!!!!!!!!</h1>)
         }
         
-        const [request] = useSendRequestMutation()
-        const sendRequest = async(id:string)=>{
-            try{
-               const result =  await request(id).unwrap()
-               if(result.message=='request sent'){
-                alert("reqest is sent")
-               }
 
-            }catch(er){
-                console.log(er)
+        const sendRequest = async(id:string)=>{
+           
+            const result =  await request({request:id}).unwrap()
+            if(result.message=='request sent'){
+                alert("reqest is sent")
+                return;
             }
 
         }
