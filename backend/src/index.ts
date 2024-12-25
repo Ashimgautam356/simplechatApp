@@ -17,20 +17,17 @@ const app = express()
 
 app.use(express.json())
 app.use(cors())
-const currentVersion = '${/api/v1}'
 
+const currentVersion = '/api/v1'
 
-app.post(`${currentVersion}`,entryPoint)
+app.use(`${currentVersion}`,entryPoint)
 
 // middle ware
 
-
 app.use(auth)
 
-
-
 // sending request 
-app.post(`${currentVersion}/user`,userEndPoints)
+app.use(`${currentVersion}/user`,userEndPoints)
 
 
 

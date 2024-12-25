@@ -20,10 +20,21 @@ export const chatApp = createApi({
                 }
             })
 
+        }),
+        signupUser: builder.mutation({
+            query:({userName,email,password})=>({
+                url:'signup',
+                method:'POST',
+                body:{
+                    email,
+                    password,
+                    userName
+                }
+            })
         })
     })
 
 
 })
 
-export const {useGetUsersQuery,useLoginUserMutation} = chatApp
+export const {useGetUsersQuery,useLoginUserMutation,useSignupUserMutation} = chatApp

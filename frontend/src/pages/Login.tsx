@@ -1,9 +1,14 @@
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useLoginUserMutation } from '../store/apis'
+import { Link } from 'react-router-dom'
 
-interface MyForm{
+
+
+
+export interface MyForm{
     email:string,
-    password:string
+    password:string,
+    userName?:String
 }
 
 export const Login = () => {
@@ -54,6 +59,9 @@ export const Login = () => {
                     </div>
          
                 </form>
+            </div>
+            <div className='w-full mt-8'>
+                <p>don't have an account <Link to={'/signup'} className='underline'>Signup</Link></p>
             </div>
 
         </div>    
