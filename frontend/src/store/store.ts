@@ -1,8 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { chatApp } from "./apis";
-import  showFriendsSlice  from "./slices/showfriend/showFriend";
+import  showFriendsSlice  from "./slices/changingState/showFriend";
 import  currentUserReducer  from "./slices/currentUser/currentUser";
-import  showRequestSlice  from "./slices/showfriend/showRequest";
+import  showRequestSlice  from "./slices/changingState/showRequest";
+import  openChatBoxSlices  from "./slices/changingState/showMessageBox";
 
 export const store = configureStore({
     reducer:{
@@ -10,6 +11,7 @@ export const store = configureStore({
         showFriend:showFriendsSlice,
         currentUser: currentUserReducer,
         showRequest: showRequestSlice,
+        openChatBox: openChatBoxSlices,
     },
 
     middleware: (getDefaultMiddleware)=>{

@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "../store/hooks"
-import {changeState} from "../store/slices/showfriend/showFriend"
-import { changeRequesState } from "../store/slices/showfriend/showRequest"
+import {changeState} from "../store/slices/changingState/showFriend"
+import { changeRequesState } from "../store/slices/changingState/showRequest"
 import { MyFriends } from "./MyFriends"
 import { RequestRecive } from "./RequestRecive"
 

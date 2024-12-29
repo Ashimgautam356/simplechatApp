@@ -4,7 +4,6 @@ import { useAcceptOrdelteMutation, useGetRequestReciveQuery} from "../store/apis
 export const RequestRecive = () => {
 
          const {data,error,isLoading} = useGetRequestReciveQuery()
-         console.log(data)
           const [request] = useAcceptOrdelteMutation()
         
             if(error){
@@ -28,9 +27,7 @@ export const RequestRecive = () => {
 
 
   return (
-    <div className='mt-8'>  
-
-    <div className=" w-96 border border-black p-8" >
+    <div className='absolute felx flex-col border border-black p-4'>  
         {
         data?.users?.requestRecieve?.map((user:{_id:string,userName:string})=>{
            return (<div key={user._id} className="p-2 bg-gray-200 mb-2 flex justify-around">
@@ -41,8 +38,6 @@ export const RequestRecive = () => {
                 )
         }) 
         }
-
-    </div>
         
 </div>
   )

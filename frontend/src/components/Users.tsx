@@ -1,4 +1,5 @@
 import { useGetUsersQuery, useSendRequestMutation } from "../store/apis"
+import { MessageBox } from "./MessageBox"
 
 export const Users = () => {
 
@@ -38,6 +39,10 @@ export const Users = () => {
             }) 
             }
 
+        </div>
+
+        <div>
+            <MessageBox></MessageBox>
         </div>
             
     </div>
